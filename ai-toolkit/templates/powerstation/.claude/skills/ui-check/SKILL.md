@@ -6,8 +6,11 @@ disable-model-invocation: true
 
 # /ui-check — look before you say "done"
 
-Pre-req: the bridge/dashboard is already running locally (Tony started it). Never start, stop or restart the bridge yourself.
-Never click buttons that can send commands. Read-only viewing only.
+Pre-req: the bridge/dashboard is already running locally (Tony started it) in its safe build-disabled /
+dispatch LOCKED state. Never start, stop or restart the bridge yourself.
+Read-only viewing only: use navigate, screenshot, snapshot and resize. Do NOT use click/type/fill/press tools,
+except opening `<details>` accordions Tony named. If any button text mentions Eco+, Stop, arm, fire, send,
+dispatch or OCPP, never touch it. If unsure, stop and ask.
 
 1. Read `DESIGN.md`.
 2. With the Playwright MCP browser, open the local dashboard URL from CURRENT_SOURCE_FOR_CLAUDE.txt.
