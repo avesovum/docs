@@ -1,0 +1,55 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "disableBypassPermissionsMode": "disable",
+    "deny": [
+      "Read(./octopus_bridge_config.json)",
+      "Read(./simulator_history.db)",
+      "Read(./*.db-wal)",
+      "Read(./*.db-shm)",
+      "Read(./bridge.log)",
+      "Read(./.env)",
+      "Bash(ssh:*)",
+      "Bash(scp:*)",
+      "Bash(systemctl:*)"
+    ],
+    "ask": [
+      "Bash(curl:*)",
+      "Bash(powershell:*)",
+      "Bash(pwsh:*)"
+    ],
+    "allow": [
+      "Bash(python .claude/hooks/md5_report.py)",
+      "Bash(python -m py_compile:*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Edit|Write|MultiEdit|Grep|Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.py"],
+            "onFailure": "block",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python",
+            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/twin_check.py"],
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
