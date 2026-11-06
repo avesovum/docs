@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home Energy Dashboard</title>
+  <meta name="description" content="Home energy dashboard showing demo data for solar, grid, Powerwall, Zappi EV charging, tariffs and Solar Sponge automation safety state.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="demo-ribbon" role="note">
+    <strong>DEMO DATA</strong>
+    <span>Every value on this page is sample data. Nothing here is live and no device is connected.</span>
+  </div>
+
+  <header class="page-head">
+    <div class="wrap head-inner">
+      <div>
+        <p class="eyebrow">Home energy</p>
+        <h1>Energy dashboard</h1>
+      </div>
+      <p class="head-meta">Solar sample 3 s old <span class="tag tag-demo">Demo</span></p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- Safety state: always visible, never collapsible -->
+    <section class="safety" aria-labelledby="safety-title">
+      <div class="safety-head">
+        <svg class="safety-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <div>
+          <h2 id="safety-title">Safety state</h2>
+          <p>No commands can be sent to devices while dispatch is locked.</p>
+        </div>
+      </div>
+      <dl class="safety-grid">
+        <div class="safety-item is-locked">
+          <dt>Dispatch</dt>
+          <dd>LOCKED <span class="sep">/</span> NOT ARMED</dd>
+        </div>
+        <div class="safety-item is-dry">
+          <dt>Solar Sponge mode</dt>
+          <dd>DRY-RUN</dd>
+          <p class="safety-note">No commands sent</p>
+        </div>
+        <div class="safety-item">
+          <dt>Retained export floor</dt>
+          <dd>4.5 <span class="unit">kW</span></dd>
+          <p class="safety-note warn-text">Current export 3.1 kW is below this floor</p>
+        </div>
+      </dl>
+    </section>
+
+    <!-- 1. Overview -->
+    <details class="panel" open>
+      <summary>
+        <span class="num">1</span>
+        <span class="panel-title">Overview</span>
+        <span class="panel-hint"><span class="dot dot-warn"></span>1 stale feed, 1 missing</span>
+      </summary>
+      <div class="panel-body">
+
+        <div class="flow" aria-label="Where the 4.2 kW of solar is going">
+          <div class="flow-label">
+            <span>Where the solar is going</span>
+            <span class="mono">4.2 kW</span>
+          </div>
+          <div class="flow-bar" role="img" aria-label="House 1.1 kW, grid export 3.1 kW, battery 0 kW, EV 0 kW">
+            <span class="seg seg-house" style="flex: 1.1"></span>
+            <span class="seg seg-export" style="flex: 3.1"></span>
+          </div>
+          <ul class="flow-legend">
+            <li><span class="key key-house"></span>House 1.1 kW</li>
+            <li><span class="key key-export"></span>Grid export 3.1 kW</li>
+            <li><span class="key key-none"></span>Powerwall 0.0 kW</li>
+            <li><span class="key key-none"></span>EV 0.0 kW</li>
+          </ul>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Solar generation</h3>
+            <p class="value">4.2 <span class="unit">kW</span></p>
+            <p class="meta"><span class="status ok">Live</span> sample 3 s old</p>
+          </article>
+
+          <article class="card">
+            <h3>House load</h3>
+            <p class="value">1.1 <span class="unit">kW</span></p>
+            <p class="meta">Consumption</p>
+          </article>
+
+          <article class="card">
+            <h3>Grid</h3>
+            <p class="value">3.1 <span class="unit">kW</span></p>
+            <p class="meta"><span class="status export">Exporting</span> import 0.0 kW</p>
+          </article>
+
+          <article class="card">
+            <h3>Powerwall</h3>
+            <p class="value">100 <span class="unit">% SoC</span></p>
+            <p class="meta"><span class="status neutral">Idle</span> 0.0 kW</p>
+          </article>
+
+          <article class="card">
+            <h3>EV / Zappi</h3>
+            <p class="value">0.0 <span class="unit">kW</span></p>
+            <p class="meta"><span class="status neutral">Stopped</span> EV plugged in (pst B1)</p>
+          </article>
+
+          <article class="card card-warn">
+            <h3>MyEnergi grd sample</h3>
+            <p class="value">95 <span class="unit">s old</span></p>
+            <p class="meta"><span class="status warn">Stale</span> limit is 30 s</p>
+          </article>
+
+          <article class="card">
+            <h3>Octopus tariff</h3>
+            <p class="value">24.5 <span class="unit">p/kWh</span></p>
+            <p class="meta"><span class="status neutral">Cached</span> 20 min old</p>
+          </article>
+
+          <article class="card card-missing">
+            <h3>Tesla vehicle SoC</h3>
+            <p class="value value-missing">Not available</p>
+            <p class="meta"><span class="status missing">No data</span> nothing received</p>
+          </article>
+        </div>
+      </div>
+    </details>
+
+    <!-- 2. EV charger / Solar Sponge -->
+    <details class="panel" open>
+      <summary>
+        <span class="num">2</span>
+        <span class="panel-title">EV charger / Solar Sponge</span>
+        <span class="panel-hint"><span class="dot dot-lock"></span>Dispatch locked</span>
+      </summary>
+      <div class="panel-body">
+
+        <dl class="kv">
+          <div><dt>Charger</dt><dd>Zappi</dd></div>
+          <div><dt>Mode</dt><dd>Stopped</dd></div>
+          <div><dt>Charge power</dt><dd class="mono">0.0 kW</dd></div>
+          <div><dt>Vehicle</dt><dd>Plugged in (pst B1)</dd></div>
+          <div><dt>Vehicle SoC</dt><dd class="muted">Not available</dd></div>
+          <div><dt>grd sample</dt><dd><span class="status warn">Stale</span> 95 s (limit 30 s)</dd></div>
+        </dl>
+
+        <h3 class="subhead">Automation dispatch readiness</h3>
+
+        <ul class="checks">
+          <li class="check fail">
+            <span class="check-mark" aria-hidden="true">&times;</span>
+            <div>
+              <p class="check-name">Dispatch state</p>
+              <p class="check-detail">LOCKED / NOT ARMED</p>
+            </div>
+          </li>
+          <li class="check fail">
+            <span class="check-mark" aria-hidden="true">&times;</span>
+            <div>
+              <p class="check-name">Solar Sponge mode</p>
+              <p class="check-detail">DRY-RUN: proposals are logged, no commands sent</p>
+            </div>
+          </li>
+          <li class="check fail">
+            <span class="check-mark" aria-hidden="true">&times;</span>
+            <div class="check-grow">
+              <p class="check-name">Retained export proof</p>
+              <p class="check-detail"><span class="mono">3.1 kW</span> export vs <span class="mono">4.5 kW</span> floor: <strong>BELOW floor</strong> by 1.4 kW</p>
+              <div class="gauge" role="img" aria-label="Export 3.1 kW against a 4.5 kW floor">
+                <span class="gauge-fill" style="width: 51.67%"></span>
+                <span class="gauge-floor" style="left: 75%"><span>Floor 4.5</span></span>
+              </div>
+              <div class="gauge-scale"><span>0</span><span>6 kW</span></div>
+            </div>
+          </li>
+          <li class="check fail">
+            <span class="check-mark" aria-hidden="true">&times;</span>
+            <div>
+              <p class="check-name">grd sample freshness</p>
+              <p class="check-detail">95 s old, limit 30 s: STALE</p>
+            </div>
+          </li>
+        </ul>
+
+        <div class="actions">
+          <div class="action">
+            <button type="button" class="btn btn-safe" id="refresh-btn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+              Refresh shadow validation
+            </button>
+            <p class="action-note"><span class="tag tag-safe">Safe</span> Read-only. Re-checks the conditions above without touching any device.</p>
+            <p class="action-result" id="refresh-result" aria-live="polite"></p>
+          </div>
+
+          <div class="action action-danger">
+            <button type="button" class="btn btn-danger" disabled aria-describedby="eco-blocked">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+              Send Eco+ to Zappi
+            </button>
+            <p class="action-note"><span class="tag tag-danger">Real command</span> Sends a live mode change to the charger.</p>
+            <div class="blocked" id="eco-blocked">
+              <p>Unavailable. Every one of these has to clear first:</p>
+              <ul>
+                <li>Dispatch is LOCKED / NOT ARMED</li>
+                <li>Solar Sponge is in DRY-RUN</li>
+                <li>Export 3.1 kW is below the 4.5 kW floor</li>
+                <li>grd sample is stale (95 s &gt; 30 s)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- 3. Battery -->
+    <details class="panel">
+      <summary>
+        <span class="num">3</span>
+        <span class="panel-title">Battery</span>
+        <span class="panel-hint">Powerwall full, idle</span>
+      </summary>
+      <div class="panel-body">
+        <div class="battery">
+          <div class="battery-shell" role="img" aria-label="Powerwall state of charge 100 percent">
+            <span class="battery-fill" style="width: 100%"></span>
+            <span class="battery-text">100 %</span>
+          </div>
+          <span class="battery-cap" aria-hidden="true"></span>
+        </div>
+        <dl class="kv">
+          <div><dt>State of charge</dt><dd class="mono">100 %</dd></div>
+          <div><dt>Status</dt><dd>Idle</dd></div>
+          <div><dt>Power</dt><dd class="mono">0.0 kW</dd></div>
+          <div><dt>Note</dt><dd>Full, so surplus solar goes to the grid</dd></div>
+        </dl>
+      </div>
+    </details>
+
+    <!-- 4. Tariffs -->
+    <details class="panel">
+      <summary>
+        <span class="num">4</span>
+        <span class="panel-title">Tariffs</span>
+        <span class="panel-hint">Cheaper from 16:00</span>
+      </summary>
+      <div class="panel-body">
+        <div class="tariffs">
+          <article class="tariff tariff-now">
+            <p class="tariff-label">Current slot</p>
+            <p class="value">24.5 <span class="unit">p/kWh</span></p>
+            <p class="meta"><span class="status neutral">Cached</span> 20 min old</p>
+          </article>
+          <div class="tariff-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <article class="tariff tariff-next">
+            <p class="tariff-label">Next slot from 16:00</p>
+            <p class="value">15.0 <span class="unit">p/kWh</span></p>
+            <p class="meta"><span class="status ok">&minus;9.5 p</span> cheaper than now</p>
+          </article>
+        </div>
+        <p class="footnote">Source: Octopus. The current rate comes from a cached copy, not a fresh fetch.</p>
+      </div>
+    </details>
+
+    <!-- 5. Recent decisions -->
+    <details class="panel">
+      <summary>
+        <span class="num">5</span>
+        <span class="panel-title">Recent decisions</span>
+        <span class="panel-hint">5 proposals, 0 commands sent</span>
+      </summary>
+      <div class="panel-body">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">time</th>
+                <th scope="col">proposal</th>
+                <th scope="col">reason</th>
+                <th scope="col">command_sent</th>
+                <th scope="col">dry_run</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="mono">15:42</td>
+                <td>Set Zappi to Eco+</td>
+                <td>Export 3.1 kW is below the 4.5 kW retained floor</td>
+                <td><span class="pill pill-no">no</span></td>
+                <td><span class="pill pill-yes">yes</span></td>
+              </tr>
+              <tr>
+                <td class="mono">15:37</td>
+                <td>Hold Stopped</td>
+                <td>grd sample stale (95 s, limit 30 s)</td>
+                <td><span class="pill pill-no">no</span></td>
+                <td><span class="pill pill-yes">yes</span></td>
+              </tr>
+              <tr>
+                <td class="mono">15:32</td>
+                <td>Set Zappi to Eco+</td>
+                <td>Dispatch locked / not armed</td>
+                <td><span class="pill pill-no">no</span></td>
+                <td><span class="pill pill-yes">yes</span></td>
+              </tr>
+              <tr>
+                <td class="mono">15:27</td>
+                <td>Hold Stopped</td>
+                <td>Tesla vehicle SoC not available</td>
+                <td><span class="pill pill-no">no</span></td>
+                <td><span class="pill pill-yes">yes</span></td>
+              </tr>
+              <tr>
+                <td class="mono">15:22</td>
+                <td>No action</td>
+                <td>Powerwall at 100 %, surplus already exporting</td>
+                <td><span class="pill pill-no">no</span></td>
+                <td><span class="pill pill-yes">yes</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+  </main>
+
+  <footer class="wrap page-foot">
+    <p><span class="tag tag-demo">Demo</span> Sample values for layout only. No live connection to solar, Powerwall, Zappi, Octopus or Tesla.</p>
+  </footer>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('refresh-btn');
+      var out = document.getElementById('refresh-result');
+      if (!btn || !out) return;
+      btn.addEventListener('click', function () {
+        var t = new Date();
+        var hh = String(t.getHours()).padStart(2, '0');
+        var mm = String(t.getMinutes()).padStart(2, '0');
+        var ss = String(t.getSeconds()).padStart(2, '0');
+        out.textContent = 'Checked at ' + hh + ':' + mm + ':' + ss + ' (demo). Still blocked: 4 of 4 checks fail. No commands sent.';
+      });
+    })();
+  </script>
+</body>
+</html>

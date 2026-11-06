@@ -1,0 +1,353 @@
+/* Cape House Power Station dashboard. Follows DESIGN.md ("Calm control room"). */
+
+/* §2 tokens */
+:root {
+  /* surfaces */
+  --bg:#F6F7F9; --surface:#FFFFFF; --border:#D9DEE5;
+  --text:#14181F; --text-muted:#525B6B; --accent:#1F5FD6;
+  /* energy flows (all ≥4.5:1 on --bg and --surface) */
+  --solar:#A15C00; --export:#1B7A43; --import:#B3261E; --battery:#0B6E8A; --ev:#6B46C1;
+  /* spacing — 4px base. Use ONLY these */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
+  /* radius, type */
+  --radius:6px; --radius-lg:10px;
+  --font: system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg:#0E1116; --surface:#161B22; --border:#2A313C;
+  --text:#E6EAF0; --text-muted:#9AA4B2; --accent:#6EA8FE;
+  --solar:#F2B33D; --export:#4CC38A; --import:#FF7B72; --battery:#4FC3E0; --ev:#B39DFF;
+}}
+
+/* Derived aliases (built only from §2 tokens, no new colours).
+   STALE badge = solid amber background + dark text, in both schemes. */
+:root {
+  --stale-bg: color-mix(in srgb, var(--solar) 55%, var(--surface));
+  --stale-text: var(--text);
+  --target: calc(var(--s6) + var(--s2)); /* 40px touch target */
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --stale-bg: var(--solar);
+  --stale-text: var(--bg);
+}}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 var(--font);
+}
+h1, h2, h3, p, dl, dd { margin: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--s4);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr); /* stop wide content widening the page on phones */
+  gap: var(--s4);
+}
+/* §6 phone rule: grid/flex children may shrink; long values wrap instead of overflowing */
+.page > *, .section-body > *, .grid > *, .card > *, .safety-item, .action { min-width: 0; }
+.page { overflow-wrap: anywhere; }
+
+/* Header */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2) var(--s4);
+}
+.page-header h1 { font-size: 16px; font-weight: 600; }
+.page-header .sub { color: var(--text-muted); }
+
+/* Demo notice + safety strip */
+.notice {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--s3) var(--s4);
+  display: grid;
+  gap: var(--s1);
+}
+.notice strong { font-weight: 600; }
+.notice p { color: var(--text-muted); }
+
+.safety {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--s3) var(--s4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s3) var(--s5);
+  align-items: center;
+}
+.safety-item { display: flex; flex-direction: column; gap: var(--s1); }
+.floor-value { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+
+/* Labels (§5): sentence case exactly as written, never forced uppercase */
+.label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Badges (§4): word + icon + colour, never colour alone */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s1);
+  padding: 0 var(--s2);
+  min-height: var(--s5);
+  border: 1px solid var(--text-muted);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.badge svg { flex: none; }
+.badge-stale {
+  background: var(--stale-bg);
+  border-color: var(--stale-bg);
+  color: var(--stale-text);
+}
+/* Reserved for ARMED / LIVE-FIRE only: the only solid-red element on the page. */
+.badge-armed {
+  background: var(--import);
+  border-color: var(--import);
+  color: var(--surface);
+}
+
+/* Accordions */
+details.section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+details.section > summary {
+  list-style: none;
+  cursor: pointer;
+  min-height: var(--s7);
+  padding: var(--s2) var(--s4);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 var(--s3);
+  border-radius: var(--radius-lg);
+}
+details.section > summary::-webkit-details-marker { display: none; }
+details.section > summary::marker { content: ""; }
+/* §6 / review 6: one SVG chevron for every section, rotated when open */
+details.section > summary .chev {
+  grid-column: 1; grid-row: 1;
+  color: var(--text-muted);
+  transition: transform .15s;
+}
+details.section[open] > summary .chev { transform: rotate(90deg); }
+details.section > summary h2 { grid-column: 2; grid-row: 1; font-size: 16px; font-weight: 600; }
+details.section > summary .badge { grid-column: 3; grid-row: 1 / span 2; justify-self: end; }
+/* One summary line per section (§4) */
+.summary-line { grid-column: 2; grid-row: 2; color: var(--text-muted); font-size: 12px; }
+details.section[open] > summary { border-bottom: 1px solid var(--border); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+.section-body {
+  padding: var(--s4);
+  display: grid;
+  gap: var(--s4);
+}
+.section-body h3 { font-size: 14px; font-weight: 600; }
+
+/* Card grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--s4);
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--s4);
+  display: grid;
+  gap: var(--s2);
+  align-content: start;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2);
+  min-height: var(--s5);
+}
+.card-head .label { margin: 0; }
+/* Cards that differ from their section summary (stale) stand out; the rest stay quiet */
+.card.is-stale { border-color: var(--stale-bg); }
+.card.wide { grid-column: 1 / -1; }
+
+/* Numbers (§5) */
+.num {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.num .unit {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: var(--s1);
+}
+.num.word { letter-spacing: 0; }
+.meta { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.nodata { color: var(--text-muted); }
+.mono { font-family: var(--mono); font-size: 12px; }
+
+/* Flow colours (§3) */
+.solar { color: var(--solar); }
+.export { color: var(--export); }
+.import { color: var(--import); }
+.battery { color: var(--battery); }
+.ev { color: var(--ev); }
+
+/* Key/value rows */
+.kv {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--s2) var(--s4);
+  align-items: baseline;
+}
+.kv dt { color: var(--text-muted); }
+.kv dd { font-variant-numeric: tabular-nums; }
+
+/* Export-floor meter */
+.meter { display: grid; gap: var(--s1); }
+.meter-track {
+  position: relative;
+  height: var(--s2);
+  background: var(--border);
+  border-radius: var(--radius);
+}
+.meter-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--export);
+  border-radius: var(--radius);
+}
+/* §4: below its limit = warning (stale amber), never green */
+.meter-fill.is-below { background: var(--stale-bg); }
+.meter-floor {
+  position: absolute;
+  top: calc(var(--s1) * -1);
+  bottom: calc(var(--s1) * -1);
+  width: 2px;
+  background: var(--text);
+}
+.meter-scale {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Buttons (§6) */
+.actions { display: flex; flex-wrap: wrap; gap: var(--s4); align-items: flex-start; }
+.action { display: grid; gap: var(--s1); max-width: 36em; justify-items: start; }
+.action-command {
+  border: 1px solid var(--import);
+  border-radius: var(--radius-lg);
+  padding: var(--s3);
+  gap: var(--s2);
+}
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.tag-command { color: var(--import); }
+.btn {
+  font: inherit;
+  font-weight: 600;
+  min-height: var(--target);
+  padding: 0 var(--s4);
+  border-radius: var(--radius);
+  border: 1px solid var(--accent);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+}
+.btn svg { flex: none; }
+.btn-primary { background: var(--accent); color: var(--surface); }
+.btn-command { background: transparent; color: var(--import); border-color: var(--import); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+/* Blocked command stays legible: the padlock and blocker list say it is unavailable. Never filled. */
+.btn-command:disabled { opacity: 1; background: transparent; }
+.reason { color: var(--text-muted); }
+.blockers { margin: 0; padding-left: var(--s5); display: grid; gap: var(--s1); }
+
+/* Table (§6): numbers right-aligned, zebra off, row hover only */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th, td {
+  text-align: left;
+  padding: var(--s2) var(--s3);
+  border-bottom: 1px solid var(--border);
+  vertical-align: baseline; /* 12px mono no/yes cells share the row baseline */
+}
+th { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+td.n, th.n { text-align: right; }
+tbody tr:hover { background: var(--bg); }
+tbody tr:last-child td { border-bottom: 0; }
+
+.footer { color: var(--text-muted); font-size: 12px; }
+
+/* Phones */
+@media (max-width: 640px) {
+  .safety { flex-direction: column; align-items: flex-start; }
+  /* key/value rows stack (label above value) so badges never push past the card edge */
+  .kv { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .kv dd + dt { margin-top: var(--s2); }
+}
+/* §6: below 600px each table row becomes a stacked card (label: value), no column hidden */
+@media (max-width: 599.98px) {
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table, tbody, tr, td { display: block; }
+  tbody { display: grid; gap: var(--s3); }
+  tbody tr {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--s3);
+  }
+  tbody tr:hover { background: var(--surface); }
+  td, tbody tr:last-child td {
+    border: 0;
+    padding: var(--s1) 0;
+    display: grid;
+    grid-template-columns: 8em minmax(0, 1fr);
+    gap: var(--s2);
+    align-items: baseline;
+  }
+  td.n { text-align: left; }
+  td::before {
+    content: attr(data-label);
+    font-family: var(--font);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.section > summary::before { transition: none; }
+}

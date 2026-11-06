@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cape House Power Station (DEMO)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-lock" viewBox="0 0 16 16">
+    <path d="M4.5 7V5a3.5 3.5 0 0 1 7 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <rect x="3" y="7" width="10" height="7.5" rx="1.5" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16">
+    <path d="M6 3.5 10.5 8 6 12.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<main class="page">
+
+  <header class="page-header">
+    <div>
+      <h1>Cape House Power Station</h1>
+      <p class="sub">Home energy dashboard</p>
+    </div>
+    <span class="badge">DEMO DATA</span>
+  </header>
+
+  <section class="notice" aria-label="Demo data notice">
+    <p><strong>Demo data only.</strong> Every number on this page is a fixed demo sample. Nothing here is live,
+      and no command can reach any device. Freshness badges read DEMO where a live page would read LIVE.</p>
+  </section>
+
+  <section class="safety" aria-label="Safety state">
+    <div class="safety-item">
+      <span class="label">Dispatch</span>
+      <span class="badge"><svg width="12" height="12" aria-hidden="true"><use href="#i-lock"/></svg>LOCKED / NOT ARMED</span>
+    </div>
+    <div class="safety-item">
+      <span class="label">Solar Sponge mode</span>
+      <span class="badge">DRY-RUN · no commands sent</span>
+    </div>
+    <div class="safety-item">
+      <span class="label">Retained export floor</span>
+      <span class="floor-value"><strong>4.5</strong> kW
+        <span class="badge badge-stale"><span aria-hidden="true">⚠</span>BELOW FLOOR · export 3.1 kW</span></span>
+    </div>
+  </section>
+
+  <!-- 1. Overview -->
+  <details class="section" open>
+    <summary>
+      <svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg>
+      <h2>Overview</h2>
+      <span class="summary-line">Demo data · 1 stale feed, 1 cached, 1 missing</span>
+      <span class="badge badge-stale"><span aria-hidden="true">⚠</span>STALE</span>
+    </summary>
+    <div class="section-body">
+      <div class="grid">
+
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Solar generation</h3>
+          </div>
+          <p class="num"><span class="solar">4.2</span><span class="unit">kW</span></p>
+          <p class="meta">Sample 3 s old</p>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">House load</h3>
+          </div>
+          <p class="num">1.1<span class="unit">kW</span></p>
+          <p class="meta">Sample age: <span class="nodata">— no data</span></p>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Grid</h3>
+          </div>
+          <p class="num"><span class="export">3.1</span><span class="unit">kW exporting</span></p>
+          <p class="meta">Import 0.0 kW · sample age: <span class="nodata">— no data</span></p>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Powerwall</h3>
+          </div>
+          <p class="num"><span class="battery">100</span><span class="unit">% SoC</span></p>
+          <p class="meta">Idle 0.0 kW · sample age: <span class="nodata">— no data</span></p>
+        </article>
+
+        <article class="card is-stale">
+          <div class="card-head">
+            <h3 class="label">EV / Zappi</h3>
+            <span class="badge badge-stale"><span aria-hidden="true">⚠</span>STALE · 95s</span>
+          </div>
+          <p class="num"><span class="ev">Stopped</span></p>
+          <p class="meta">0.0 kW · EV plugged in (<span class="mono">pst B1</span>) · via MyEnergi, 95 s old</p>
+        </article>
+
+        <article class="card is-stale">
+          <div class="card-head">
+            <h3 class="label">MyEnergi grd sample</h3>
+            <span class="badge badge-stale"><span aria-hidden="true">⚠</span>STALE · 95s</span>
+          </div>
+          <p class="num">95<span class="unit">s old</span></p>
+          <p class="meta">Limit 30 s. Older than the limit, so it is not trusted.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Octopus tariff</h3>
+            <span class="badge">CACHED · 20 min</span>
+          </div>
+          <p class="num">24.5<span class="unit">p/kWh</span></p>
+          <p class="meta">Cached value, 20 min old</p>
+        </article>
+
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Tesla vehicle SoC</h3>
+            <span class="badge">NO DATA</span>
+          </div>
+          <p class="num nodata">—<span class="unit">no data</span></p>
+          <p class="meta">No data received</p>
+        </article>
+
+      </div>
+    </div>
+  </details>
+
+  <!-- 2. EV charger / Solar Sponge -->
+  <details class="section" open>
+    <summary>
+      <svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg>
+      <h2>EV charger / Solar Sponge</h2>
+      <span class="summary-line">1 stale feed · dispatch locked, export below floor</span>
+      <span class="badge badge-stale"><span aria-hidden="true">⚠</span>STALE</span>
+    </summary>
+    <div class="section-body">
+      <div class="grid">
+        <article class="card is-stale">
+          <div class="card-head">
+            <h3 class="label">Zappi charger</h3>
+            <span class="badge badge-stale"><span aria-hidden="true">⚠</span>STALE · 95s</span>
+          </div>
+          <p class="num"><span class="ev">Stopped</span></p>
+          <dl class="kv">
+            <dt>EV power</dt><dd><span class="ev">0.0</span> kW</dd>
+            <dt>EV</dt><dd>Plugged in (<span class="mono">pst B1</span>)</dd>
+            <dt>MyEnergi grd sample</dt><dd>95 s old (limit 30 s)</dd>
+          </dl>
+        </article>
+      </div>
+
+      <h3>Automation dispatch readiness</h3>
+      <article class="card">
+        <dl class="kv">
+          <dt>Dispatch</dt>
+          <dd><span class="badge"><svg width="12" height="12" aria-hidden="true"><use href="#i-lock"/></svg>LOCKED / NOT ARMED</span></dd>
+          <dt>Solar Sponge mode</dt>
+          <dd><span class="badge">DRY-RUN</span> no commands sent</dd>
+          <dt>Retained export proof</dt>
+          <dd><span class="badge badge-stale"><span aria-hidden="true">⚠</span>BELOW FLOOR</span>
+            <strong>3.1</strong> kW export vs <strong>4.5</strong> kW floor (1.4 kW short)</dd>
+        </dl>
+
+        <div class="meter" role="img" aria-label="Export 3.1 kW against a 4.5 kW retained floor, on a 0 to 5 kW scale. Below floor.">
+          <div class="meter-track">
+            <div class="meter-fill is-below" style="width:62%"></div>
+            <div class="meter-floor" style="left:90%"></div>
+          </div>
+          <div class="meter-scale"><span>0 kW</span><span>export 3.1 · floor 4.5</span><span>5 kW</span></div>
+        </div>
+
+        <div class="actions">
+          <div class="action">
+            <span class="tag">SAFE · read-only</span>
+            <button type="button" class="btn btn-primary" id="refresh-shadow">Refresh shadow validation</button>
+            <p class="reason">Sends nothing to any device.</p>
+            <p class="meta" id="shadow-status" aria-live="polite">Not run yet in this session.</p>
+          </div>
+          <div class="action action-command">
+            <span class="tag tag-command">REAL COMMAND</span>
+            <button type="button" class="btn btn-command" id="send-eco" disabled aria-describedby="eco-reason eco-blockers"><svg width="14" height="14" aria-hidden="true"><use href="#i-lock"/></svg>Send Eco+ to Zappi</button>
+            <p class="reason" id="eco-reason">Sends a real command to the charger. Blocked by:</p>
+            <ul class="blockers" id="eco-blockers">
+              <li>Dispatch is LOCKED / NOT ARMED</li>
+              <li>Solar Sponge mode is DRY-RUN (no commands sent)</li>
+              <li>Export 3.1 kW is below the 4.5 kW retained export floor</li>
+              <li>MyEnergi grd sample is stale: 95 s old, limit 30 s</li>
+              <li>This page shows demo data</li>
+            </ul>
+            <p class="meta">Asks you to confirm before sending, once unblocked.</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </details>
+
+  <!-- 3. Battery -->
+  <details class="section">
+    <summary>
+      <svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg>
+      <h2>Battery</h2>
+      <span class="summary-line">Demo data · sample age missing</span>
+      <span class="badge">DEMO</span>
+    </summary>
+    <div class="section-body">
+      <div class="grid">
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Powerwall</h3>
+          </div>
+          <p class="num"><span class="battery">100</span><span class="unit">% SoC</span></p>
+          <dl class="kv">
+            <dt>State</dt><dd>Idle</dd>
+            <dt>Charge / discharge</dt><dd><span class="battery">0.0</span> kW</dd>
+            <dt>Sample age</dt><dd class="nodata">— no data</dd>
+          </dl>
+        </article>
+      </div>
+    </div>
+  </details>
+
+  <!-- 4. Tariffs -->
+  <details class="section">
+    <summary>
+      <svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg>
+      <h2>Tariffs</h2>
+      <span class="summary-line">Octopus · both slots cached, 20 min old</span>
+      <span class="badge">CACHED · 20 min</span>
+    </summary>
+    <div class="section-body">
+      <div class="grid">
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Octopus · current</h3>
+          </div>
+          <p class="num">24.5<span class="unit">p/kWh</span></p>
+          <p class="meta">Cached value, 20 min old</p>
+        </article>
+        <article class="card">
+          <div class="card-head">
+            <h3 class="label">Octopus · next slot</h3>
+          </div>
+          <p class="num">15.0<span class="unit">p/kWh</span></p>
+          <p class="meta">From 16:00</p>
+        </article>
+      </div>
+    </div>
+  </details>
+
+  <!-- 5. Recent decisions -->
+  <details class="section">
+    <summary>
+      <svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg>
+      <h2>Recent decisions</h2>
+      <span class="summary-line">5 decisions · no command sent</span>
+      <span class="badge">DRY-RUN</span>
+    </summary>
+    <div class="section-body">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" class="n">Time</th>
+              <th scope="col">Proposal</th>
+              <th scope="col">Reason</th>
+              <th scope="col">command_sent</th>
+              <th scope="col">dry_run</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="n" data-label="Time">13:58</td>
+              <td data-label="Proposal">Eco+ to Zappi</td>
+              <td data-label="Reason">Export 3.1 kW below 4.5 kW retained floor</td>
+              <td class="mono" data-label="command_sent">no</td>
+              <td class="mono" data-label="dry_run">yes</td>
+            </tr>
+            <tr>
+              <td class="n" data-label="Time">13:53</td>
+              <td data-label="Proposal">Hold, no change</td>
+              <td data-label="Reason">MyEnergi grd sample stale (95 s, limit 30 s)</td>
+              <td class="mono" data-label="command_sent">no</td>
+              <td class="mono" data-label="dry_run">yes</td>
+            </tr>
+            <tr>
+              <td class="n" data-label="Time">13:48</td>
+              <td data-label="Proposal">Eco+ to Zappi</td>
+              <td data-label="Reason">Dispatch LOCKED / NOT ARMED</td>
+              <td class="mono" data-label="command_sent">no</td>
+              <td class="mono" data-label="dry_run">yes</td>
+            </tr>
+            <tr>
+              <td class="n" data-label="Time">13:43</td>
+              <td data-label="Proposal">Keep Zappi stopped</td>
+              <td data-label="Reason">Tesla vehicle SoC not available</td>
+              <td class="mono" data-label="command_sent">no</td>
+              <td class="mono" data-label="dry_run">yes</td>
+            </tr>
+            <tr>
+              <td class="n" data-label="Time">13:38</td>
+              <td data-label="Proposal">Hold, no change</td>
+              <td data-label="Reason">Solar Sponge in DRY-RUN mode</td>
+              <td class="mono" data-label="command_sent">no</td>
+              <td class="mono" data-label="dry_run">yes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="meta">Demo log. No command was sent for any row.</p>
+    </div>
+  </details>
+
+  <p class="footer">DEMO data. Cape House Power Station dashboard.</p>
+</main>
+
+<script>
+(function () {
+  var refresh = document.getElementById('refresh-shadow');
+  var status = document.getElementById('shadow-status');
+  refresh.addEventListener('click', function () {
+    var t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    status.textContent = 'Refreshed at ' + t + ' (demo, read-only, nothing sent).';
+  });
+  var eco = document.getElementById('send-eco');
+  eco.addEventListener('click', function () {
+    if (eco.disabled) return;
+    if (!window.confirm('Send Eco+ to Zappi? This sends a real command to the charger.')) return;
+    // Demo page: no command path exists.
+  });
+})();
+</script>
+</body>
+</html>

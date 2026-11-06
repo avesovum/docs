@@ -85,7 +85,8 @@ cards only get a badge when they differ from that summary.
 - Buttons: primary (filled `--accent`) only for safe actions, with a small "SAFE · read-only" tag.
   Any command-capable button: outlined `--import` red, padlock icon when unavailable, a "REAL COMMAND" tag, the exact
   action label ("Send Eco+ to Zappi"), a confirm step, and when blocked a bullet list of every condition blocking it.
-  Never fill a command button solid while dispatch is LOCKED.
+  Never fill a command button solid while dispatch is LOCKED. While blocked, draw it with a dashed `--border`
+  outline and `--text-muted` text (looks unavailable); full-strength red outline only once it is actually usable.
 - Tables: right-align numbers, zebra off, row hover only. Below 600px wide, tables become stacked cards (one card per
   row, label: value) so no column is hidden, especially command_sent and dry_run.
 - Phone (390px): no horizontal scroll ever. Use `min-width: 0` on grid/flex children, `overflow-wrap: anywhere` on long

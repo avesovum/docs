@@ -1,5 +1,12 @@
 # Tony's AI toolkit: design better, build faster, stay safe
 
+> **Start here:**
+> - `pilot/PILOT_REPORT.md`: what was tested and what it proved, in plain English.
+> - `APPLY_ON_PC.md`: paste-in steps to put it on your real projects, safest first.
+>   Each step shows you the change and waits for your "yes".
+>
+> Sections 1–5 below are the research and reasoning behind it.
+
 A living guide. Copy this folder to `C:\Users\Tony\ai-toolkit\` on your PC. Templates are in `templates/`.
 Last researched: **2026-11-06**. See the changelog at the bottom.
 
@@ -307,6 +314,24 @@ Do these in a **copy** of the project first, or after a fresh zip baseline.
 ---
 
 ## Changelog
+
+- **2026-11-06 (pilot):** Ran the pilot on a demo dashboard (see `pilot/PILOT_REPORT.md`).
+  - **Guards:** with guards, Claude was blocked from reading secrets and from enabling live dispatch. Without them it
+    enabled live dispatch. The twin check kept main.js and main-live.js identical.
+  - **Design** (blind scores, design / safety):
+    - no rulebook: 83 / 80
+    - rulebook v1: 74 / 85
+    - rulebook v2 + quality gate: 84 / 90
+  - **DESIGN.md v2:**
+    - sentence-case labels
+    - amber for below-limit values
+    - command buttons: padlock, REAL COMMAND tag, blocked reasons, dashed while blocked
+    - stacked tables on phone
+    - no sideways scroll
+    - one summary line per section
+  - `/ui-check` now uses the two scorecards.
+  - Added `test_guards.py` (11 checks) and `APPLY_ON_PC.md`.
+  - Dropped `/preflight` and `/checkpoint` from the Powerstation pack, since your cape-* skills cover them.
 
 - **2026-11-06 (later):** Added §1b from the read-only audit of all 12 Desktop folders.
   - Marked as already in place: gitleaks, Playwright, agents, checkpoint skills.
