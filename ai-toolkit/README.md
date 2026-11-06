@@ -315,6 +315,16 @@ Do these in a **copy** of the project first, or after a fresh zip baseline.
 
 ## Changelog
 
+- **2026-11-06 (folder setup):** Reviewed the Karens Tax Issue setup. The layout is good, but its guards were left OFF.
+  - Added a `/new-project` command: builds the house layout from one master template, with the guards ON, in App or Light size.
+  - Added a `new_folder_check.py` start-up check. Tested with real Claude Code: in a new Desktop folder, Claude offers
+    setup first and creates nothing.
+  - `APPLY_ON_PC.md`:
+    - step 3 switches Karen's guards on
+    - step 3b makes each project's own save-check run
+    - step 10 automates future folders
+  - `/new-app` now calls `/new-project`.
+
 - **2026-11-06 (pilot):** Ran the pilot on a demo dashboard (see `pilot/PILOT_REPORT.md`).
   - **Guards:** with guards, Claude was blocked from reading secrets and from enabling live dispatch. Without them it
     enabled live dispatch. The twin check kept main.js and main-live.js identical.

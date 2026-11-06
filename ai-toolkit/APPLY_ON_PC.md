@@ -40,16 +40,42 @@ Inspect only, then STOP for my approval before any change.
 ```
 **Check afterwards:** in a new session, ask "read .env in WRENMINT Control". It should be refused.
 
-## Step 3: Git safety rules for Karens Tax Issue (5 min)
-**Why:** it holds someone's tax documents and has no Claude safety rules at all.
+## Step 3: Switch on Karens Tax Issue's guards (5 min)
+**Why:** the folder's own CLAUDE.md says "Guards are not yet switched on: switching them on is a task for Tony to
+approve". This is that task. Today nothing *enforces* "never open Karen's paperwork unless Tony asks".
 **Folder:** `Desktop\Karens Tax Issue`
 
 ```
-Inspect only, then STOP for my approval before any change.
-Show me the permissions in Desktop\PROJAA\.claude\settings.json (rules only). Propose creating
-.claude\settings.json here with the same git deny and ask rules (push, remote add, reset --hard, clean, rebase,
-commit --no-verify; ask on commit and tag), plus "defaultMode": "default". After I say yes, create it and validate the JSON.
+This is the approved task "switch on the guards" that CLAUDE.md mentions. Inspect first, then STOP for my approval.
+Propose .claude\settings.json with:
+- "defaultMode": "default"
+- ask:  Read(./Karens Paperwork/**), so you must get my OK each time you open one of Karen's files
+- deny: Edit(./Karens Paperwork/**), Edit(./Images/**), Read/Edit of .env, .env.*, *.key, *.pem, *.jks, *.keystore
+- deny: git push, remote add, reset --hard, clean, rebase, commit --no-verify and commit -n, in Bash and PowerShell
+  (copy the exact rules from Desktop\PROJAA\.claude\settings.json)
+- ask:  git commit, git tag
+After I say yes: create it, validate the JSON, and update the CLAUDE.md line about guards to say the Claude settings
+guard is ON (the pre-commit guard is switched on in step 3b). Show me the full Windows paths changed.
 ```
+
+## Step 3b: Make each project's own save-check actually run (10 min)
+**Why:** RearPeek, PROJAA and Karens Tax Issue each have a save-check (`tools\git-hooks\pre-commit`) that blocks
+photos, private paperwork, keys and National Insurance numbers. None of them runs, because your global gitleaks hook
+takes their place. This step makes the global hook run gitleaks first, then the project's own check.
+**Folder:** any
+
+```
+Inspect first, then STOP for my approval.
+1. Show me: git config --global --get core.hooksPath  and the contents of the pre-commit file in that folder.
+2. Propose the smallest addition to that global pre-commit so that, after gitleaks passes, it runs the repository's
+   own tools/git-hooks/pre-commit if that file exists (and stops the commit if it fails). Keep gitleaks exactly as it is.
+3. After I say yes: apply it. Then prove it in Desktop\Karens Tax Issue WITHOUT committing:
+   create Karens Paperwork\_hooktest.txt, force-stage it (git add -f), run the global pre-commit script directly, and show
+   that it BLOCKS. Then run git restore --staged on it and delete the test file. Show git status before and after.
+Do not commit, push, or change any repository's own git config.
+```
+**Note:** the project checks also run your documentation checker, so a commit is stopped if the docs are incomplete.
+That's what those checks were designed to do.
 
 ## Step 4: Read-only health check (10 min, changes nothing)
 **Why:**
@@ -134,19 +160,34 @@ Nothing is deleted, only moved. Wait for my approval of the table.
 ## Step 9: Optional extras
 - `/plugin install frontend-design@claude-plugins-official`: Anthropic's design skill. Tell it "calm, data-first, follow DESIGN.md".
 - Fix the duplicate header and the too-broad trigger words in your Cape House skill: claude.ai → Settings → Skills.
-## Step 10: Make every FUTURE app start safe (5 min)
-**Why:** this makes the setup happen automatically for new apps, instead of you remembering it.
-**Folder:** any
+## Step 10: Every FUTURE project sets itself up, with the guards ON (15 min)
+**Why:** today a new folder gets your layout only if you ask, and it's copied from whichever project was last, guards
+off. After this step, Claude notices a new Desktop folder by itself, offers to set it up, and builds it from one master
+template with the guards switched on. You just say "yes".
+**Folder:** `Desktop`
 
 ```
-Inspect first, then STOP for my approval.
-1. Plan to copy C:\Users\Tony\ai-toolkit\templates\global-skills\new-app\ to %USERPROFILE%\.claude\skills\new-app\
-2. Plan to add ONE line at the end of %USERPROFILE%\.claude\CLAUDE.md:
-   "When I start a new app, or a folder has no CLAUDE.md/AGENTS.md yet, suggest running /new-app before writing code."
-Show me both changes. After I say yes, apply them and confirm /new-app appears when I type /.
+Inspect first, then STOP for my approval before each part.
+1. Copy C:\Users\Tony\ai-toolkit\templates\global-skills\new-project\ and ...\new-app\ to %USERPROFILE%\.claude\skills\
+2. Copy C:\Users\Tony\ai-toolkit\templates\global-hooks\new_folder_check.py to %USERPROFILE%\.claude\hooks\
+   and add to %USERPROFILE%\.claude\settings.json (merge, keep my existing secret-check hook):
+   "SessionStart": [{"hooks": [{"type": "command", "command": "python",
+       "args": ["C:/Users/Tony/.claude/hooks/new_folder_check.py"], "timeout": 10}]}]
+   Validate the JSON afterwards.
+3. Run /new-project's "Creating the master template" section: build Desktop\_PROJECT_TEMPLATE from
+   Desktop\Karens Tax Issue. Show me the file list and the placeholders before saving.
+4. Test: make an empty folder Desktop\hooktest-new, start Claude Code in it (its first message should offer setup),
+   say "no, it's a scratch folder", then delete the folder.
 ```
 
-**After this, every new app gets:**
+**After this, every new project folder:**
+1. gets noticed: open Claude in it and its first message offers setup;
+2. is built from **one master template** (`_PROJECT_TEMPLATE`), so an improvement made once reaches every new project;
+3. starts with the **guards switched on**: private folders need your OK to open, keys can't be read, no accidental uploads;
+4. comes in two sizes: **App** (full layout) or **Light** (research, business or document folders).
+
+For a new **app**, `/new-app` then adds the plan, sketches, DESIGN.md, screenshot check and health check.
+**Each new app also gets:**
 - a plan
 - 3 quick sketches
 - its own DESIGN.md
