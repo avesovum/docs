@@ -1,7 +1,8 @@
 # One-paste setup (about 20–30 minutes, mostly Claude working)
 
 **What you do:**
-1. Unzip the toolkit to `C:\Users\Tony\ai-toolkit\`. The folder must be exactly that.
+1. Unzip the toolkit into `Desktop\Tools Research\`, so you get `Desktop\Tools Research\ai-toolkit\`.
+   (`C:\Users\Tony\ai-toolkit\` also works.)
 2. Make your usual zip backup of **V40 Version Y Powerstation**. This is just habit: the setup doesn't touch its code.
 3. Open the Claude desktop app → **Code** tab → start a new session in your **Desktop** folder.
 4. Copy everything in the grey box below and paste it in.
@@ -34,7 +35,9 @@ HARD LIMITS (never break these):
 - Do NOT edit, move or delete any project code, data or runtime file (.py .js .html .css .kt .gradle .ps1 .db .log, configs, zips).
 - Do NOT open: Images\, Karens Paperwork\, output\, octopus_bridge_config.json, .env, .dev.vars, key files, logs, databases.
 - Do NOT commit, push, tag, or change any repository's git config. Do NOT send any device/MyEnergi/Tesla/Octopus command.
-- Use Python for copying and editing files, not PowerShell. Paths: T = C:\Users\Tony\ai-toolkit, D = C:\Users\Tony\OneDrive\Desktop,
+- Use Python for copying and editing files, not PowerShell. Paths: T = the folder this toolkit is in (normally
+  C:\Users\Tony\OneDrive\Desktop\Tools Research\ai-toolkit, or C:\Users\Tony\ai-toolkit); in every copied skill or
+  hook file replace C:\Users\Tony\ai-toolkit with T. D = C:\Users\Tony\OneDrive\Desktop,
   U = C:\Users\Tony\.claude
 - Only these files may be created or changed:
   U\settings.json
