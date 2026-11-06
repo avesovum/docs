@@ -11,7 +11,7 @@ Plain English throughout. Start every question with "Tony, …". Recommendations
 ## 0. Check where we are (read-only)
 - Confirm the working folder is a direct child of `C:\Users\Tony\OneDrive\Desktop\` and has no `AGENTS.md`/`CLAUDE.md`.
   If it already has them, STOP: this is an existing project.
-- Master template: `C:\Users\Tony\OneDrive\Desktop\_PROJECT_TEMPLATE\`.
+- Master template: `C:\Users\Tony\ai-toolkit\project-template\`.
   If it doesn't exist, STOP and offer to create it once (see "Creating the master template" below).
 
 ## 1. Ask Tony 4 things (one message)
@@ -49,7 +49,7 @@ Show Tony this, then wait for "yes":
 - Report: full Windows paths created, guards ON (show the self-test / hook proof), what Tony still needs to decide. STOP.
 
 ## Creating the master template (one time only)
-Copy `Desktop\Karens Tax Issue` (the newest, cleanest setup) to `Desktop\_PROJECT_TEMPLATE`, excluding `.git`, `Images`,
+Copy `Desktop\Karens Tax Issue` (the newest, cleanest setup) to `C:\Users\Tony\ai-toolkit\project-template`, excluding `.git`, `Images`,
 `Karens Paperwork`, `output` contents and `docs/research` / `docs/handovers` contents. Replace project-specific text with
 `{{PLACEHOLDERS}}` and remove Karen-specific rules (keep them as an example block marked "example: private paperwork").
 Add a `LIGHT.md` list of which files the Light size keeps. Show Tony the result before saving.

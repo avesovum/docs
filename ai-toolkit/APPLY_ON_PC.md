@@ -174,7 +174,7 @@ Inspect first, then STOP for my approval before each part.
    "SessionStart": [{"hooks": [{"type": "command", "command": "python",
        "args": ["C:/Users/Tony/.claude/hooks/new_folder_check.py"], "timeout": 10}]}]
    Validate the JSON afterwards.
-3. Run /new-project's "Creating the master template" section: build Desktop\_PROJECT_TEMPLATE from
+3. Run /new-project's "Creating the master template" section: build C:\Users\Tony\ai-toolkit\project-template from
    Desktop\Karens Tax Issue. Show me the file list and the placeholders before saving.
 4. Test: make an empty folder Desktop\hooktest-new, start Claude Code in it (its first message should offer setup),
    say "no, it's a scratch folder", then delete the folder.
@@ -182,7 +182,7 @@ Inspect first, then STOP for my approval before each part.
 
 **After this, every new project folder:**
 1. gets noticed: open Claude in it and its first message offers setup;
-2. is built from **one master template** (`_PROJECT_TEMPLATE`), so an improvement made once reaches every new project;
+2. is built from **one master template** (`C:\Users\Tony\ai-toolkit\project-template`), so an improvement made once reaches every new project;
 3. starts with the **guards switched on**: private folders need your OK to open, keys can't be read, no accidental uploads;
 4. comes in two sizes: **App** (full layout) or **Light** (research, business or document folders).
 

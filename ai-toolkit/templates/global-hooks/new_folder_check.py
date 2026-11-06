@@ -24,7 +24,7 @@ def main():
     parent = os.path.basename(os.path.dirname(cwd)).lower()
     name = os.path.basename(cwd)
     if parent != "desktop" or name.startswith(("_", ".")):
-        sys.exit(0)  # only real project folders directly on the Desktop; skips _PROJECT_TEMPLATE
+        sys.exit(0)  # only real project folders directly on the Desktop; skips folders starting with _ or .
     if any(os.path.exists(os.path.join(cwd, m)) for m in MARKERS):
         sys.exit(0)  # already set up
     note = (f"START-UP CHECK: the folder '{name}' is on Tony's Desktop but has no AGENTS.md or CLAUDE.md, so it isn't "

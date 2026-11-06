@@ -1,9 +1,9 @@
 # Tony's AI toolkit: design better, build faster, stay safe
 
 > **Start here:**
+> - **`SETUP_ALL.md`:** one paste sets everything up safely, with backups and before/after proof. `UNDO.md` reverses it.
 > - `pilot/PILOT_REPORT.md`: what was tested and what it proved, in plain English.
-> - `APPLY_ON_PC.md`: paste-in steps to put it on your real projects, safest first.
->   Each step shows you the change and waits for your "yes".
+> - `APPLY_ON_PC.md`: the same changes as separate steps, if you prefer one at a time.
 >
 > Sections 1–5 below are the research and reasoning behind it.
 
@@ -314,6 +314,20 @@ Do these in a **copy** of the project first, or after a fresh zip baseline.
 ---
 
 ## Changelog
+
+- **2026-11-06 ("doesn't interfere" pass):** You asked for nothing that changes how you work.
+  - Guards narrowed:
+    - reading bridge.log is allowed
+    - scripts that use the DB are allowed
+    - local curl to the bridge is allowed
+    - a shell command naming the config now *asks* instead of blocking, so a yes/no key check still works
+  - Removed from the Powerstation pack: the start-mode change, the bypass switch-off, and the PowerShell/curl "ask" rules.
+  - The self-test grew to 23 checks, 10 of them proving normal work still passes. It found and fixed a gap with
+    JSON-style `"ev_control_enabled": true`.
+  - Re-ran real Claude Code tests: key never shown, live flag stayed OFF, normal edit worked.
+  - Added `SETUP_ALL.md` (one paste: backup, then a fingerprint of every project file before and after, proving that
+    only the listed files change), `UNDO.md` and `tools/snapshot.py`.
+  - The master template now lives in `ai-toolkit\project-template`, not on the Desktop.
 
 - **2026-11-06 (folder setup):** Reviewed the Karens Tax Issue setup. The layout is good, but its guards were left OFF.
   - Added a `/new-project` command: builds the house layout from one master template, with the guards ON, in App or Light size.
