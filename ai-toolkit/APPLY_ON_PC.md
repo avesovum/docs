@@ -134,4 +134,23 @@ Nothing is deleted, only moved. Wait for my approval of the table.
 ## Step 9: Optional extras
 - `/plugin install frontend-design@claude-plugins-official`: Anthropic's design skill. Tell it "calm, data-first, follow DESIGN.md".
 - Fix the duplicate header and the too-broad trigger words in your Cape House skill: claude.ai → Settings → Skills.
-- Copy `templates\global-skills\new-app\` to `%USERPROFILE%\.claude\skills\new-app\` so you get `/new-app` for future apps.
+## Step 10: Make every FUTURE app start safe (5 min)
+**Why:** this makes the setup happen automatically for new apps, instead of you remembering it.
+**Folder:** any
+
+```
+Inspect first, then STOP for my approval.
+1. Plan to copy C:\Users\Tony\ai-toolkit\templates\global-skills\new-app\ to %USERPROFILE%\.claude\skills\new-app\
+2. Plan to add ONE line at the end of %USERPROFILE%\.claude\CLAUDE.md:
+   "When I start a new app, or a folder has no CLAUDE.md/AGENTS.md yet, suggest running /new-app before writing code."
+Show me both changes. After I say yes, apply them and confirm /new-app appears when I type /.
+```
+
+**After this, every new app gets:**
+- a plan
+- 3 quick sketches
+- its own DESIGN.md
+- safety settings (secret files blocked, no accidental git push, "ask me" mode)
+- a guard if it controls devices or money
+- a screenshot check
+- a health check before anyone else uses it
