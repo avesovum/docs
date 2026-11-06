@@ -27,8 +27,10 @@ def main():
         sys.exit(0)
     ha, hb = md5(a), md5(b)
     if ha != hb:
-        print(f"main.js ({ha}) and main-live.js ({hb}) are no longer byte-identical. "
-              f"Apply the same change to the other file (or copy it) before continuing.", file=sys.stderr)
+        print(f"PROJECT RULE: main.js and main-live.js must stay byte-identical. They now differ "
+              f"(main.js {ha}, main-live.js {hb}). Make the identical change in the other file now. "
+              f"If Tony explicitly said not to, do not finish silently: tell him in your reply that "
+              f"TWINS_IDENTICAL = NO.", file=sys.stderr)
         sys.exit(2)
     sys.exit(0)
 

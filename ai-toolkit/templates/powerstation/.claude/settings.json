@@ -27,7 +27,8 @@
     ],
     "allow": [
       "Bash(python .claude/hooks/md5_report.py)",
-      "Bash(python -m py_compile:*)"
+      "Bash(python -m py_compile:*)",
+      "Bash(python .claude/hooks/test_guards.py)"
     ]
   },
   "hooks": {
@@ -38,7 +39,9 @@
           {
             "type": "command",
             "command": "python",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.py"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/guard.py"
+            ],
             "onFailure": "block",
             "timeout": 10
           }
@@ -52,7 +55,9 @@
           {
             "type": "command",
             "command": "python",
-            "args": ["${CLAUDE_PROJECT_DIR}/.claude/hooks/twin_check.py"],
+            "args": [
+              "${CLAUDE_PROJECT_DIR}/.claude/hooks/twin_check.py"
+            ],
             "timeout": 10
           }
         ]
