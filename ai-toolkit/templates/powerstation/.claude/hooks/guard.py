@@ -11,7 +11,7 @@ import re
 import sys
 
 PROTECTED = re.compile(
-    r"(octopus_bridge_config\.json|simulator_history\.db|\.db-wal|\.db-shm|\.sqlite|bridge\.log|(^|[\\/])\.env)",
+    r"(octopus_bridge_config\.json|simulator_history\.db|\.db-wal|\.db-shm|\.sqlite|bridge\.log|\.dev\.vars|(^|[\\/])\.env)",
     re.I,
 )
 REMOTE_CMD = re.compile(r"\b(ssh|scp|sftp|curl|wget|Invoke-WebRequest|systemctl)\b", re.I)

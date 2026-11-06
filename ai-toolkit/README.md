@@ -45,7 +45,63 @@ Enforcing them is safer and uses fewer tokens.
 
 ---
 
-## 2. Top 10, ranked by value ÷ effort for you
+## 1b. After your PC audit (2026-11-06): this replaces the top 10 below
+
+This came from a read-only audit of all 12 Desktop folders, run on your PC. You already had more in place than §1 assumed.
+
+**Already in place, so skip:**
+- gitleaks (global pre-commit)
+- Playwright + context7 MCP
+- review/debug/security/test agents
+- Powerstation checkpoint, rollback, package and safe-edit skills, plus MD5 sidecars
+- deny rules for dangerous commands
+- git-safety rules in PROJAA and APP FAMILY
+- a global secret check on shell commands
+- design work done prototype-first (mockups, approved and rejected folders)
+- Claude Code 2.1.312 and Python 3.14
+
+That means my `/preflight` and `/checkpoint` aren't needed, and gitleaks and Playwright are already installed.
+
+**Safety gaps (small, do first):**
+
+| # | Gap | Fix | Time |
+|---|---|---|---|
+| S1 | **APP FAMILY runs no secret scan.** Its own hooks folder replaces the global one. This project holds HMRC/tax material | Add a gitleaks call to `tools/git-hooks/pre-commit` | 5 min |
+| S2 | Local pre-commit hooks in PROJAA, Karens and RearPeek never run. The global hooks folder replaces them, so PROJAA's `.env`/`Images/` block is off | Make the global pre-commit also run `tools/git-hooks/pre-commit` when a repo has one | 10 min |
+| S3 | Claude's **Read** tool isn't blocked from secret files. Only shell commands are checked | Global deny rules in `~/.claude/settings.json` for `.env`, `.env.*`, `.dev.vars` and `octopus_bridge_config.json`. Also check that WRENMINT Control's `.dev.vars` is git-ignored | 5 min |
+| S4 | Powerstation has no automatic hooks: live-flag ask, twin check, config read block. Playwright *can* click dashboard buttons | Pilot pack: `guard.py`, `twin_check.py`, and "ask" rules for Playwright click/type | 20 min |
+| S5 | From a terminal or VS Code, Claude Code 2.1.283+ **starts in auto mode** | `"defaultMode": "default"` in Powerstation settings | 2 min |
+| S6 | Karens Tax Issue has no Claude settings | Copy PROJAA's git push/reset deny rules | 5 min |
+| S7 | Powerstation has 147 allow rules. A broad one (e.g. any `python` command) can get around the deny rules | Read-only review | 10 min |
+| S8 | MCP servers `rea`, `vectorcraft`, `maestro` and `photocraft` aren't ones I recognise | Run `claude mcp get <name>` and confirm you know who made each | 5 min |
+
+**Speed and token gaps:**
+- **P1.** With both CLAUDE.md and AGENTS.md present, **Claude reads only CLAUDE.md**, unless CLAUDE.md contains `@AGENTS.md`.
+  This applies to 7 projects. Check each CLAUDE.md for that line.
+- **P2.** Powerstation `CLAUDE.md` is **701 lines**. The docs say to keep it under 200, because "longer files consume more context and reduce adherence".
+  - It loads on top of the 109-line global file and the 800-line account skill.
+  - Move the details into your cape-* skills or `.claude/rules/` files. Rules files load only when Claude touches files that match them.
+- **P3.** Powerstation has 1,040 top-level items, including 97 zips and about 70 `_pre_*` backup folders.
+  - Claude's search can turn up stale backup copies.
+  - Grep skips git-ignored files. So if you don't commit the backups, listing them in `.gitignore` hides them from search.
+  - The alternative is moving them to an archive folder next to the project.
+
+**Design gaps:**
+- **D1. There's no DESIGN.md anywhere.** Turn each project's `design/approved` folder into one. Priority order:
+  1. A shared **Wrenmint** brand file for Wrenmint.com website and WRENMINT Control.
+  2. Powerstation, where two CSS files use different variable sets.
+  3. PROJAA and RearPeek.
+- **D2.** `/ui-check` scoring plus a look-only rule. Playwright is already installed.
+  For the Android apps, `maestro` may cover the same job, if it's Maestro mobile testing.
+- **D3.** `frontend-design` plugin. The command-line tool currently has no plugins installed.
+
+**Optional:**
+- Floorplan health check for WRENMINT Control (it's a Workers app with a database and endpoints).
+- m3e-canvas for sketching Android screens. Four projects have `android/`.
+
+---
+
+## 2. Top 10, ranked by value ÷ effort for you (first draft, before the audit; see §1b)
 
 | # | What | Heading | Setup time | Cost |
 |---|---|---|---|---|
@@ -251,6 +307,13 @@ Do these in a **copy** of the project first, or after a fresh zip baseline.
 ---
 
 ## Changelog
+
+- **2026-11-06 (later):** Added §1b from the read-only audit of all 12 Desktop folders.
+  - Marked as already in place: gitleaks, Playwright, agents, checkpoint skills.
+  - Added safety gaps S1–S8, speed gaps P1–P3 and design gaps D1–D3.
+  - Checked against the docs: the AGENTS.md rule, auto-mode start and Grep skipping `.gitignore` files.
+  - `guard.py` now also blocks `.dev.vars`.
+  - Powerstation `settings.json` now asks before Playwright clicks or types.
 
 - **2026-11-06:** First version.
   - Researched about 30 tools: GitHub topics vibe-coding / claude-code / agent-skills / design, and the official
